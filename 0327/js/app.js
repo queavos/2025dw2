@@ -64,7 +64,7 @@ function mostrarTabla(){
         ///console.log(especie);
         tablaBody.innerHTML += `
              <tr>
-              <td>${especie.id}</td>
+              
             <td>${especie.nombre}</td>
             <td>${especie.nombreCientifico}</td>
             <td>${especie.habitat}</td>
