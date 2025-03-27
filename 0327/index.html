@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Gestión de especies</h1>
+			<div id="formulario">
+                <input type="text" id="id" /> 
+                <div>
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" />	
+                </div>
+                <div>
+                    <label for="nombreCientifico">Nombre cientifico</label>
+                    <input type="text" id="nombreCientifico" />	   
+                </div>     
+                <div>
+                    <label for="habitat">Habitat</label>
+                    <input type="text" id="habitat" />          
+                </div>  
+                <div>
+                    <label for="informacionExtra">Extra</label>
+                    <textarea id="informacionExtra"  ></textarea>
+                </div>    
+                <button id="guardar" type="button">Guardar</button>
+                <button id="cancelar" type="button">Cancelar</button>
+            </div>
+			<div id="tabla">
+				<h2>Lista de especies</h2>
+				<table id="tabla-especies">
+					<thead>
+						<tr>
+							<th>id</th>
+							<th>Nombre</th>
+							<th>Cientifico</th>
+							<th>habita</th>
+							<th>Acciones</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+        <script src="./js/app.js" ></script>
+	</body>
+</html>
