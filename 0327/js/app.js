@@ -19,12 +19,14 @@ function agregarEspecie(){
       console.log(dato);
       especies.push(dato);
       mostrarTabla();
-      limpiarFormulario();      
+      limpiarFormulario();   
+      persistirDatos();   
     
 }
 function eliminarEspecie(id){
   especies=especies.filter(especie=>especie.id!==id);
   mostrarTabla();
+  persistirDatos();
 }   
 function editarEspecie(id){
 const datos=especies.find(especie=>especie.id===id);
@@ -33,9 +35,12 @@ document.querySelector("#nombreCientifico").value=datos.nombreCientifico;
 document.querySelector("#habitat").value=datos.habitat;
 document.querySelector("#informacionExtra").value=datos.informacionExtra;
 document.querySelector("#id").value=datos.id;
+let btnguardar=document.querySelector("#guardar");
 document.querySelector("#guardar").innerText="Actualizar";
-//document.querySelector("#guardar").setAttribute("onclick", "actualizarEspecie()");
-document.querySelector("#guardar").addEventListener("click",()=>actualizarEspecie());
+document.querySelector("#guardar").setAttribute("onclick", "actualizarEspecie()");
+//document.querySelector("#guardar").removeEventListener("click", () => agregarEspecie());
+//document.querySelector("#guardar").addEventListener("click",()=>actualizarEspecie());
+console.log( btnguardar=document.querySelector("#guardar"));
 }  
 function actualizarEspecie(){
     //preventDefault();
@@ -53,6 +58,7 @@ function actualizarEspecie(){
     console.log(especies);        
     mostrarTabla();
     limpiarFormulario();  
+    persistirDatos();
 }
 
 /* funciones de interfaz */
@@ -85,8 +91,9 @@ function limpiarFormulario(){
     document.querySelector("#informacionExtra").value="";
     document.querySelector("#id").value="";
     document.querySelector("#guardar").innerText="Guardar";
-    document.querySelector("#guardar").removeEventListener("click",()=>actualizarEspecie());
-    document.querySelector("#guardar").addEventListener("click",()=>agregarEspecie());
+    //document.querySelector("#guardar").removeEventListener("click",()=>actualizarEspecie());
+    //document.querySelector("#guardar").addEventListener("click",()=>agregarEspecie());
+    document.querySelector("#guardar").setAttribute("onclick", "agregarEspecie()");
 }
 
 /* funciones otras */
@@ -123,3 +130,7 @@ const datosPrueba = [
 ];
 especies=datosPrueba;
 }
+function persistirDatos(){
+    localStorage.setItem("especies",JSON.stringify(especies));
+}
+
