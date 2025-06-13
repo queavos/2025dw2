@@ -1,0 +1,117 @@
+<?php
+require_once '../lib/conf.php';
+require_once '../lib/conexionDB.php';
+$conex = new ConexionDB();
+$conex->conectar();
+$con = $conex->conex;
+$errores = array();
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../../node_modules/font-awesome/css/font-awesome.min.css" />
+   <link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<body>
+  <!-- ENCABEZADO -->
+  <?php include '../fragmentos/header.php'; ?><br>
+  <?php include '../fragmentos/adm_menu.php'; ?>
+
+  <!-- SECCIÓN PRINCIPAL -->
+<div class="container">
+
+    <?php
+    if (!isset($_GET['accion'])) {
+        include '_list.php';
+        $pagina = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    }
+    if (($_GET['accion']== 'nuevo')) {
+        $id=0;
+        $nombre="";
+        $descripcion="";
+        $accion="guardar";
+        $titulo="Crear Nuevo Rol";   
+        include '_form.php';
+    }
+    if (($_GET['accion']== 'editar')) {
+         if (isset($_GET['id'])) {
+            $sql = "select * from recintos where id=" . $_GET['id'];
+            $rs = $con->query($sql);
+            $dato = $rs->fetch_assoc();
+            $id=$dato['id'];
+            $nombre=$dato['nombre'];
+            $descripcion=$dato['descripcion'];
+            $numero = $dato['numero'];
+            $accion="guardar";
+            $titulo="Editar Recinto - ".$nombre;    
+            include '_form.php'; }
+        else {
+            $errores->push("No se ha indicado el id del recinto a editar");
+            $e=http_build_query($errores);
+            $url="index.php?errores=".$e;
+            header("Location: $url");
+        }
+    }
+    if (($_GET['accion']== 'borrar')) {
+        //include '_list.php';
+        if (isset($_GET['id'])) {
+            $sql = "delete from recintos where id=". $_GET['id'];
+            $rs = $con->query($sql);
+            $url="index.php";   
+            header("Location: $url");   
+        } else {
+            $errores->push("No se ha indicado el id del recinto a borrar");
+            $e=http_build_query($errores);
+            $url="index.php?errores=".$e;  
+        }
+        header("Location: $url");
+    }
+    if (($_GET['accion']== 'guardar')) {
+        //include '_list.php';
+        //echo "guardar <br>";
+        if ((($_POST['id']==0))) 
+            {
+      
+              $sql = "insert into recintos (nombre,descripcion,numero) values ('".$_POST['nombre']."','". $_POST['descripcion']. "'," . $_POST['numero'] .")";
+                //$rs = $con->query($sql);
+                 $rs = $con->query($sql);
+            header("Location: index.php");
+                
+            } elseif ((isset($_POST['id'])) && ($_POST['id']>0) ) { { 
+               $sql= "update recintos set descripcion='". $_POST['descripcion']."', nombre='". $_POST['nombre']."', numero= ". $_POST['numero']." where id=". $_POST['id'];
+                //$rs = $con->query($sql);
+                 $rs = $con->query($sql);
+            header("Location: index.php");
+            }
+            $rs = $con->query($sql);
+            header("Location: index.php");
+            /*
+            if ($rs) {
+                header("Location: index.php");
+            } else {
+                echo "Error al guardar el rol";
+            }*/
+    }
+    }
+    ?>
+</div>
+      <!-- PIE DE PÁGINA -->
+  <?php 
+  include '../fragmentos/footer.php';
+  
+  ?>
+
+  <!-- JavaScript -->
+  
+
+
+<script src="../js/page.js"></script>
+<script src="../js/script.js"></script>
+</body>
+
+</html>
