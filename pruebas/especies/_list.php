@@ -23,7 +23,6 @@ if (isset($_GET['errores'])) {
             <th>Nombre Cientifico</rh>
             <th>Orden</th>
             <th>Familia</th>
-            <th>QR</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -38,15 +37,11 @@ if (isset($_GET['errores'])) {
                     ?></td>
                 <td><?php echo $dato['orden'];
                     ?></td>
-                <td><?php echo $dato['familia'];
+                <td><?php echo $dato['familia']; 
                     ?></td>
-                <td><img class="img-thumbnail " style="width: 120px;" src="<?php echo $dato['link_qr'];
-                                                        ?>" alt="" srcset=""></td>
                 <td>
                     <a href="index.php?accion=editar&id=<?php echo $dato['id']; ?>" class="btn btn-outline-warning">Editar</a>
                     <a href="index.php?accion=borrar&id=<?php echo $dato['id']; ?>" class="btn btn-outline-danger">Borrar</a>
-                    <a href="index.php?accion=qrgen&id=<?php echo $dato['id']; ?>" class="btn btn-outline-secondary">Generar QR</a>
-                    <a href="index.php?accion=images&id=<?php echo $dato['id']; ?>" class="btn btn-outline-info">Imagenes</a>
                 </td>
             </tr>
         <?php } ?>

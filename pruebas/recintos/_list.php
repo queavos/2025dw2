@@ -1,8 +1,7 @@
 <?php
 require_once '../lib/Paginacion.php';
-require_once '../lib/utilidades.php';
 //$rs = $con->query("select * from roles");
-$paginacion = new Paginacion($con, 'especies', isset($_GET['pagina']) ? $_GET['pagina'] : 1, 2);
+$paginacion = new Paginacion($con, 'recintos', isset($_GET['pagina']) ? $_GET['pagina'] : 1, 2);
 $rs = $paginacion->obtenerDatos();
 ?>
 <?php
@@ -19,12 +18,11 @@ if (isset($_GET['errores'])) {
 <table class="table">
     <thead>
         <tr>
-            <th>Nombre</th>
-            <th>Nombre Cientifico</rh>
-            <th>Orden</th>
-            <th>Familia</th>
-            <th>QR</th>
-            <th>Acciones</th>
+            <th>id</th>
+            <th>nombre</th>
+            <th>Numero</th>
+            <th>desc</th>
+            <th>acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -32,21 +30,13 @@ if (isset($_GET['errores'])) {
         while ($dato = $rs->fetch_assoc()) {
         ?>
             <tr>
-
+                <td><?php echo $dato['id']; ?></td>
                 <td><?php echo $dato['nombre']; ?></td>
-                <td><?php echo $dato['nombre_cientifico'];
-                    ?></td>
-                <td><?php echo $dato['orden'];
-                    ?></td>
-                <td><?php echo $dato['familia'];
-                    ?></td>
-                <td><img class="img-thumbnail " style="width: 120px;" src="<?php echo $dato['link_qr'];
-                                                        ?>" alt="" srcset=""></td>
+                <td><?php echo $dato['numero']; ?></td>
+                <td><?php echo $dato['descripcion']; ?></td>
                 <td>
                     <a href="index.php?accion=editar&id=<?php echo $dato['id']; ?>" class="btn btn-outline-warning">Editar</a>
                     <a href="index.php?accion=borrar&id=<?php echo $dato['id']; ?>" class="btn btn-outline-danger">Borrar</a>
-                    <a href="index.php?accion=qrgen&id=<?php echo $dato['id']; ?>" class="btn btn-outline-secondary">Generar QR</a>
-                    <a href="index.php?accion=images&id=<?php echo $dato['id']; ?>" class="btn btn-outline-info">Imagenes</a>
                 </td>
             </tr>
         <?php } ?>

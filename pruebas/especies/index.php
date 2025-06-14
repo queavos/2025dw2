@@ -43,6 +43,7 @@ $errores = array();
             if (isset($_GET['id'])) {
                 $sql = "select * from especies where id=" . $_GET['id'];
                 $rs = $con->query($sql);
+
                 $dato = $rs->fetch_assoc();
                 $id = $dato['id'];
                 $nombre = $dato['nombre'];
@@ -97,7 +98,7 @@ VALUES ('" . $_POST['nombre'] . "', '" . $_POST['nombre_alternativo'] . "', '" .
                 header("Location: index.php");
             } elseif ((isset($_POST['id'])) && ($_POST['id'] > 0)) { {
                     //$role_id = 4; // Asignar un rol por defecto, por ejemplo, "Usuario"
-                    // print_r($_POST);
+                   // print_r($_POST);
                     //$activo = ($_POST['activo'] == 'on') ? true : false; // Verificar si el checkbox está marcado
                     //$email = isset($_POST['email']) ? $_POST['email'] : '';
                     $sql = "UPDATE especies SET  nombre = '" . $_POST['nombre'] . "', 
@@ -124,99 +125,6 @@ WHERE id = " . $_POST['id'] . ";";
                 echo "Error al guardar el rol";
             }*/
             }
-        }
-        if (($_GET['accion'] == 'qrgen')) {
-            if (isset($_GET['id'])) {
-                require_once '../lib/QrGen.php';
-                $sql = "select * from especies where id=" . $_GET['id'];
-                $rs = $con->query($sql);
-                $dato = $rs->fetch_assoc();
-                $id = $dato['id'];
-                $link_url = $dato['link_url'];
-                $link_qr = $dato['link_qr'];
-                $qr= new QrGen($link_url, $id);
-                $link_qr=$qr->generarQR();
-                $sql= 'update especies set link_qr="'. $link_qr.'" where id='.$id;
-                $rs = $con->query($sql);
-                include '_list.php';
-            } else {
-                $errores->push("No se ha indicado el id del rol a editar");
-                $e = http_build_query($errores);
-                $url = "index.php?errores=" . $e;
-                header("Location: $url");
-            }
-        }
-        
-        if (($_GET['accion'] == 'images')) {
-            if (isset($_GET['id'])) {
-                $sql = "select * from especies where id=" . $_GET['id'];
-                $rs = $con->query($sql);
-                $dato = $rs->fetch_assoc();
-                $id = $dato['id'];
-                $nombre = $dato['nombre'];
-                $nombre_alternativo = $dato['nombre_alternativo'];
-                $nombre_cientifico = $dato['nombre_cientifico'];
-                $cantidad = $dato['cantidad'];
-                $orden = $dato['orden'];
-                $familia = $dato['familia'];
-                $descripcion = $dato['descripcion'];
-                $ecologia = $dato['ecologia'];
-                $distribucion = $dato['distribucion'];
-                $accion = "guardar";
-                $titulo = "Editar Especie - " . $nombre;
-                $link_url = $dato['link_url'];
-                $link_qr = $dato['link_qr'];
-
-                include '_images.php';
-            } else {
-                $errores->push("No se ha indicado el id del rol a editar");
-                $e = http_build_query($errores);
-                $url = "index.php?errores=" . $e;
-                header("Location: $url");
-            }
-        }
-            if (($_GET['accion'] == 'imgsave')) {
-            if (isset($_POST['id'])) {
-                require_once "../lib/ImgRZ.php";
-                $espe_id = $_POST['id'];
-                $desc=$_POST['descripcion'];
-                $img = $_FILES['imagen']; 
-                $ima= new ImgRZ($espe_id, $img);
-                $ima->obj=720;
-                $ima->outdir="../imagenes";
-                $image = $ima->guardar();
-                echo  $sql = "INSERT INTO espe_imagenes (espe_id, archivo, descripcion) VALUES (" . $espe_id . ' , "' . $image . '", "'  . $desc . '")' ;
-                $con->query($sql);
-                //include '_list.php';
-                //http://127.0.0.1/2025dw2/0612/especies/index.php?accion=images&id=1
-                $url = "index.php?accion=images&id=".$espe_id;
-                header("Location: $url");
-            } else {
-                $errores->push("No se ha indicado el id del rol a editar");
-                $e = http_build_query($errores);
-                $url = "index.php?errores=" . $e;
-                header("Location: $url");
-            }
-        }
-        if (($_GET['accion'] == 'imgdelete')) {
-            //include '_list.php';
-            if (isset($_GET['id'])) {
-                $sql = "select archivo from espe_imagenes where id=" . $_GET['id'];
-                $rs = $con->query($sql);    
-                $dato = $rs->fetch_assoc();
-                $archivo = $dato['archivo'];
-                $ruta = "../imagenes/" . $archivo;
-                $sql = "delete from espe_imagenes where id=" . $_GET['id'];
-                $rs = $con->query($sql);
-                $url = "index.php?accion=images&id=".$_GET['espe_id'];
-                unlink($ruta); // Eliminar el archivo de la carpeta
-                header("Location: $url");
-            } else {
-                $errores->push("No se ha indicado el id del rol a borrar");
-                $e = http_build_query($errores);
-                $url = "index.php?errores=" . $e;
-            }
-            header("Location: $url");
         }
         ?>
     </div>

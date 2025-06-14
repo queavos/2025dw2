@@ -1,23 +1,25 @@
 <?php
+
 class ImgRZ
 {
-  private  $img ;
-    private    $file = $_POST['id'] . "_" . microtime() . ".jpg";
-    private     $info = getimagesize($img['tmp_name']);
-    private    $obj=720;
-    private    $w;
-    private    $h;
+    private $id;
+    private $img ;
+    private $file;
+    private $info;
+    public  $obj=720;
+    private $w;
+    private $h;
     private $mime;
     private $imagen;
-
+    public  $outdir=".";
     public function __construct($id, $file)
     {
         $info = getimagesize($file['tmp_name']);
-        $obj = 720;
-        $w = $info[0];
-        $h = $info[1];
+    
+        $this->w = $info[0];
+        $this->h = $info[1];
         $this->id=$id;
-        $file = $id. "_" . microtime() . ".jpg"
+        $this->file = $id. "_" . microtime(true) . ".jpg";
         $this->mime= $info['mime'];
         switch ($info['mime']) {
             case 'image/jpeg':
@@ -49,11 +51,10 @@ class ImgRZ
             $nh = $this->obj;
         }
         $nimage = imagecreatetruecolor($nw, $nh);
-        imagecopyresampled($nimage, $imagen, 0, 0, 0, 0, $nw, $nh, $w, $h);
-        imagejpeg($nimage, $file, 90);
-        return $nimage;
+        imagecopyresampled($nimage,  $this->imagen, 0, 0, 0, 0, $nw, $nh, $this->w, $this->h);
+        imagejpeg($nimage, $this->outdir.'/'. $this->file, 90);
+        return $this->file;
     }
-
 
 }
 ?>
