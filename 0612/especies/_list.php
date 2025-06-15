@@ -15,7 +15,8 @@ if (isset($_GET['errores'])) {
 
 ?>
 
-<a href="index.php?accion=nuevo" class="btn btn-outline-primary">Nuevo</a><br>
+<a href="index.php?accion=nuevo" class="btn btn-outline-primary">Nuevo</a>
+<a href="api.php?accion=list" target='new' class="btn btn-outline-success">JSON</a><br>
 <table class="table">
     <thead>
         <tr>
@@ -47,6 +48,7 @@ if (isset($_GET['errores'])) {
                     <a href="index.php?accion=borrar&id=<?php echo $dato['id']; ?>" class="btn btn-outline-danger">Borrar</a>
                     <a href="index.php?accion=qrgen&id=<?php echo $dato['id']; ?>" class="btn btn-outline-secondary">Generar QR</a>
                     <a href="index.php?accion=images&id=<?php echo $dato['id']; ?>" class="btn btn-outline-info">Imagenes</a>
+                    <a href="api.php?accion=get&id=<?php echo $dato['id']; ?>" target='new' class="btn btn-outline-success">JSON</a>
                 </td>
             </tr>
         <?php } ?>
